@@ -34,7 +34,7 @@ For the best experience, download the latest release for your operating system.
 ### Linux (.deb)
 
 1.  **Download the .deb package:**
-    Head to the **[Releases](https://github.com/your-username/generated-visions/releases)** page of this GitHub repository and download the latest `.deb` file (e.g., `generated-visions_0.1.0_amd64.deb`).
+    Head to the **[Releases](https://github.com/ostamand/generated-visions/releases)** page of this GitHub repository and download the latest `.deb` file (e.g., `generated-visions_0.1.0_amd64.deb`).
 2.  **Install the package:**
     Open your terminal and navigate to the directory where you downloaded the `.deb` file. Then, run the following command:
     ```bash
