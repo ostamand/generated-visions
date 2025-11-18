@@ -1,0 +1,110 @@
+.commentSection {
+  margin-top: 2rem;
+  border-top: 1px solid #444;
+  padding-top: 1.5rem;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #ccc;
+}
+
+.commentsContainer {
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.newCommentBox {
+  margin-bottom: 1.5rem;
+}
+
+.newCommentTextarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #222;
+  border: 1px solid #555;
+  border-radius: 8px;
+  color: #eee;
+  font-size: 1rem;
+  line-height: 1.5;
+  resize: vertical;
+  margin-bottom: 0.5rem;
+
+  &:focus {
+    outline: none;
+    border-color: #007acc;
+  }
+}
+
+.newCommentActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.commentList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.commentItem {
+  position: relative;
+  padding-left: 1rem;
+  border-left: 2px solid #444;
+}
+
+.commentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.commentTimestamp {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.commentActions {
+  display: flex;
+  gap: 0.5rem;
+  visibility: hidden; /* Hide by default */
+  opacity: 0; /* Start with 0 opacity */
+  transition: visibility 0s linear 0.2s, opacity 0.2s linear; /* Delay visibility change */
+}
+
+.commentItem:hover .commentActions {
+  visibility: visible; /* Make visible on hover */
+  opacity: 1; /* Fade in on hover */
+  transition: visibility 0s linear 0s, opacity 0.2s linear; /* No delay when showing */
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: color 0.2s, background-color 0.2s;
+
+  &:hover {
+    color: #fff;
+    background-color: #444;
+  }
+}
+
+.noComments {
+  text-align: center;
+  color: #888;
+  margin-top: 1rem;
+}

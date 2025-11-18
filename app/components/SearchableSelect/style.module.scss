@@ -1,0 +1,111 @@
+.selectWrapper {
+    position: relative;
+    width: 100%;
+    font-size: 0.9rem;
+  }
+  
+  .selectHeader {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 38px;
+  
+    &.open {
+      border-color: #528bff;
+    }
+  }
+  
+  .selectedValue {
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  
+  .placeholder {
+    color: #888;
+  }
+  
+  .multiSelectItem {
+    background-color: #3a3a3a;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+  
+    svg {
+      cursor: pointer;
+      &:hover {
+        color: #e06c75;
+      }
+    }
+  }
+  
+  .chevron {
+    color: #888;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .selectHeader.open .chevron {
+    transform: rotate(180deg);
+  }
+  
+  .optionsList {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #2a2a2a;
+    border: 1px solid #333;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    z-index: 10;
+    max-height: 200px;
+    overflow-y: auto;
+  
+    .searchInput {
+      width: 100%;
+      background-color: #1a1a1a;
+      border: none;
+      border-bottom: 1px solid #333;
+      color: #fff;
+      padding: 0.75rem;
+      font-size: 0.9rem;
+  
+      &:focus {
+        outline: none;
+        border-bottom-color: #528bff;
+      }
+    }
+  
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+  
+    .option {
+      padding: 0.75rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  
+      &:hover {
+        background-color: #3a3a3a;
+      }
+  
+      &.selected {
+        background-color: #528bff;
+        color: #fff;
+      }
+    }
+  }
+  

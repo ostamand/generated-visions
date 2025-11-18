@@ -1,0 +1,126 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  border-bottom: 1px solid #4a5568;
+  background-color: #1a202c;
+  color: #e2e8f0;
+  backdrop-filter: blur(8px);
+
+  @supports (backdrop-filter: blur(8px)) {
+    background-color: rgba(26, 32, 44, 0.6);
+  }
+
+  .container {
+    display: flex;
+    height: 4rem;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    span {
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 3px;
+    }
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .logoText {
+    font-weight: 700;
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+
+  .filterButton {
+    position: relative; /* Added for indicator positioning */
+    border: 1px solid #4a5568;
+    color: #d1d5db;
+    &:hover {
+      background-color: #2d3748;
+      color: #f3f4f6;
+    }
+  }
+
+  .activeFilterIndicator {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 8px;
+    height: 8px;
+    background-color: #5a4fcf; /* Accent color */
+    border-radius: 50%;
+    border: 1px solid #1a202c; /* Border to contrast with background */
+  }
+
+  .filterIcon {
+    height: 1rem;
+    width: 1rem;
+    margin-right: 0.5rem;
+  }
+
+  .searchInputContainer {
+    width: 100%;
+  }
+
+  .searchInput {
+    box-sizing: border-box;
+  }
+  outline: none;
+  &::placeholder {
+    color: #6b7280;
+  }
+}
+
+.demoBadge {
+  background-color: #5a4fcf;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 1rem;
+}
+
+.scrollable {
+  max-height: 15rem;
+  overflow-y: auto;
+}
+
+.clearFilterButton {
+  width: 100%;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+}
+
+.userIconContainer {
+  position: relative;
+  cursor: pointer;
+}
+
+.userIcon {
+  height: 2rem;
+  width: 2rem;
+}

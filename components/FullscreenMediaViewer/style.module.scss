@@ -1,0 +1,176 @@
+.fullscreenOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.mediaWrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative; /* For the Image component */
+  padding: 2rem;
+  transition: width 0.3s ease-in-out;
+}
+
+.panelWrapper {
+  width: 0;
+  background-color: #1a1a1a;
+  transition: width 0.3s ease-in-out;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  &.open {
+    width: 25%; // Percentage of the screen width
+    max-width: 400px; // Maximum width
+    border-right: 1px solid #333;
+  }
+}
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #333;
+
+  h3 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+}
+
+.toggleButton {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-left: none;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  padding: 1rem 0.5rem;
+  z-index: 55;
+  transition: left 0.3s ease-in-out;
+
+  &.open {
+    left: calc(min(25%, 400px) - 1px); // Adjust for border and max-width
+  }
+}
+
+.panelContent {
+  padding: 1rem;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.metadataField {
+  margin-bottom: 1rem;
+}
+
+.metadataLabel {
+  display: block;
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-bottom: 0.25rem;
+}
+
+.metadataValue {
+  display: block;
+  font-size: 1rem;
+  color: #fff;
+  word-break: break-all;
+}
+
+.videoPlayer {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 60; // Ensure it's above other elements
+}
+
+.actionsToolbar {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(26, 26, 26, 0.8);
+  border-radius: 8px;
+  padding: 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 60;
+}
+
+.toolbarButton {
+  color: #fff;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #333;
+  }
+}
+
+.deleteButtonRed {
+  &:hover {
+    color: #fff;
+    background-color: #dc2626; /* A shade of red */
+  }
+}
+
+.starIcon {
+  margin-right: 0.5rem;
+  height: 1rem;
+  width: 1rem;
+}
+
+.starIconStarred {
+  color: #fbbf24;
+  fill: #fbbf24;
+}
+
+.hiddenIconActive {
+  color: red;
+}

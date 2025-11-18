@@ -1,0 +1,15 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden; /* Prevents body itself from scrolling */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #000; /* Ensure a consistent background */
+}
+
+.mainContentArea {
+  flex-grow: 1;
+  overflow: hidden; /* The scrolling will be handled inside this */
+  display: flex; /* To make its child (mainContainer) fill it */
+}

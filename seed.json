@@ -1,0 +1,14 @@
+{
+  "models": [
+    "SDXL",
+    "Qwen-Image",
+    "FLUX.1-dev",
+    "WAN 2.2",
+    "Veo 3.1",
+    "Gemini 2.5 Flash Image (Nano Banana)",
+    "GPT-4o Image"
+  ],
+  "loras": [
+
+  ]
+}

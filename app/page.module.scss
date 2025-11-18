@@ -1,0 +1,15 @@
+
+.mainContainer {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background-color: #111;
+}
+
+.mainContent {
+  flex-grow: 1;
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,142 @@
+.container {
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #888;
+  margin-bottom: 0.5rem;
+}
+
+.displayWrapper {
+  position: relative;
+  padding: 0.75rem 1rem;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  border: 1px solid #444;
+  cursor: text;
+  transition: background-color 0.2s, border-color 0.2s;
+  overflow: hidden; // Ensure gradient is clipped
+
+  &:hover {
+    background-color: #333;
+    border-color: #555;
+  }
+
+  &.truncated {
+    // Apply gradient overlay when truncated
+    .displayText {
+      max-height: 7.5em; // Limit height to 5 lines (1.5em line-height * 5)
+      position: relative;
+      overflow: hidden;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3em; // Height of the fade
+        background: linear-gradient(to top, #2a2a2a, transparent); // Fade to background color
+        pointer-events: none; // Allow clicks to pass through
+      }
+    }
+    .showMoreButton {
+      position: absolute;
+      bottom: 0.5rem;
+      right: 0.5rem;
+      z-index: 1; // Ensure it's above the gradient
+    }
+  }
+}
+
+.displayText {
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #eee;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.placeholder {
+  color: #777;
+  font-style: italic;
+}
+
+.hoverActions {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  background-color: #3a3a3a;
+  padding: 0.25rem;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.2s;
+
+  .displayWrapper:hover & {
+    opacity: 1;
+  }
+}
+
+.editWrapper {
+  position: relative;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #222;
+  border: 1px solid #555;
+  border-radius: 8px;
+  color: #eee;
+  font-size: 1rem;
+  line-height: 1.5;
+  transition: border-color 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: #007acc;
+  }
+}
+
+.textarea {
+  resize: none;
+  overflow: hidden;
+}
+
+.editActions {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: color 0.2s, background-color 0.2s;
+
+  &:hover {
+    color: #fff;
+    background-color: #444;
+  }
+}
+
+.showMoreButton {
+  display: block;
+  margin-left: auto;
+}
