@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*' # Triggers only when you push a tag like v0.1.0
+  workflow_dispatch:
 
 permissions:
   contents: write # REQUIRED for uploading files to GitHub Releases

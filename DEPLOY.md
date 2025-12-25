@@ -25,7 +25,7 @@ npm version major   # 0.1.0 -> 1.0.0 (Breaking changes)
 Push the new commit and the tags to GitHub. This is the specific trigger that wakes up the build servers.
 
 ```bash
-git push origin master --follow-tags
+git push origin main --follow-tags
 ```
 
 (Note: --follow-tags is critical. A standard git push does NOT push tags, and the build will not start.)
