@@ -174,3 +174,69 @@
 .hiddenIconActive {
   color: red;
 }
+
+/* New styles for in-card loader */
+.sharingCardContent {
+  position: relative; /* Needed for absolute positioning of loader if desired, or for flex centering */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Changed from flex-start to center */
+  justify-content: center; /* Changed from flex-start to center */
+  padding: 1rem; // Add back default card padding
+}
+
+.sharingLoaderContent {
+  height: 80px; // Explicit height for loader content
+  width: 100%; // Take full width
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Space between spinner and text */
+}
+
+.shareControl {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center the content of shareControl */
+  width: 100%; /* Ensure it takes full width to center its content */
+}
+
+.cardLoader {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #fff;
+  border-top-color: #a39dff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.limitExceeded {
+  margin-top: 1rem;
+  background-color: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.5);
+  color: #f87171;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  text-align: center;
+  width: 100%;
+
+  a {
+    color: #f87171;
+    text-decoration: underline;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    display: block;
+
+    &:hover {
+      color: #ef4444;
+    }
+  }
+}

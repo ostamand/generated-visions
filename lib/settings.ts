@@ -14,6 +14,7 @@ interface Settings {
   isSeeded?: boolean;
   seed?: SeedData;
   demo?: boolean;
+  user_access_token?: string;
 }
 
 const settingsFilePath = path.join(
@@ -80,6 +81,17 @@ export function saveSettings(settings: Settings): void {
     console.error("Error writing settings file:", error);
     throw new Error("Could not save settings.");
   }
+}
+
+export function getUserAccessToken(): string | undefined {
+  const settings = getSettings();
+  if (settings.api_keys && settings.api_keys.length > 0) {
+    // Prefer the key named 'app', otherwise take the first one
+    const appKey = settings.api_keys.find((k) => k.name === "app");
+    if (appKey) return appKey.key;
+    return settings.api_keys[0].key;
+  }
+  return settings.user_access_token;
 }
 
 export function setAndRecordImagePath(newImagePath: string): void {

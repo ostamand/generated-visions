@@ -8,6 +8,8 @@ export interface GalleryItem {
   width?: number;
   height?: number;
   modified_at?: number;
+  is_shared: boolean;
+  share_id: string | null;
 }
 
 export interface GroupedGallery {

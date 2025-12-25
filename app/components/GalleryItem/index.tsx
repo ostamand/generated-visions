@@ -48,7 +48,7 @@ export default function GalleryItem({
   onCopyFolderPath,
 }: GalleryItemProps) {
   const { ref, inView } = useInView({
-    triggerOnce: true,
+    triggerOnce: false,
     rootMargin: "200px 0px",
   });
 

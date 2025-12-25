@@ -2,7 +2,14 @@
 
 import styles from "./page.module.scss";
 import { useEffect, useState } from "react";
-import { Folder, Loader2, Settings as SettingsIcon, X } from "lucide-react";
+import {
+  Folder,
+  Loader2,
+  Plus,
+  Settings as SettingsIcon,
+  Trash2,
+  X,
+} from "lucide-react";
 import { useFolderSelection } from "../hooks/useFolderSelection";
 import { FolderHistory } from "../components/FolderHistory";
 import { DataManager } from "../components/DataManager";
@@ -17,9 +24,13 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import { ApiKey } from "@/lib/settings";
 
 type Settings = {
   imagePath?: string;
+  user_access_token?: string;
+  api_keys?: ApiKey[];
 };
 
 const SettingsPage = () => {
@@ -27,6 +38,7 @@ const SettingsPage = () => {
   const [pathInput, setPathInput] = useState("");
   const [currentSettings, setCurrentSettings] = useState<Settings>({});
   const [isChanging, setIsChanging] = useState(false);
+  const [newTokenName, setNewTokenName] = useState("");
   const {} = useDemo();
 
   const {
@@ -39,11 +51,12 @@ const SettingsPage = () => {
   } = useFolderSelection();
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setEnv(window.electron?.isElectron ? "electron" : "web");
     fetch("/api/settings")
       .then((res) => res.json())
-      .then((data) => setCurrentSettings(data));
+      .then((data) => {
+        setCurrentSettings(data);
+      });
   }, []);
 
   const handleSelectFolder = async () => {
@@ -69,6 +82,14 @@ const SettingsPage = () => {
     analyzePath(path);
     setIsChanging(true);
   };
+
+  // Mocking the token list for UI based on existing data if necessary
+  const apiKeys = currentSettings.api_keys || (currentSettings.user_access_token ? [{
+    id: "legacy",
+    name: "Legacy Token",
+    key: currentSettings.user_access_token,
+    created: "Unknown"
+  }] : []);
 
   const renderChangeFolderUI = () => {
     if (isLoading) {
@@ -156,16 +177,61 @@ const SettingsPage = () => {
 
       <div className={styles.contentColumn}>
         <header className={styles.contentHeader}>
-          <h1 className="text-2xl font-bold tracking-tight">
-            General Settings
-          </h1>
+          <h1>General Settings</h1>
         </header>
         <div className={styles.settingsGrid}>
           <div className={styles.gridColumn}>
-            <Card>
+            <Card className="bg-transparent border-neutral-800">
               <CardHeader>
-                <CardTitle>Image Folder</CardTitle>
-                <CardDescription>
+                <CardTitle className={styles.cardTitle}>API KEYS</CardTitle>
+                <CardDescription className={styles.cardDescription}>
+                  Manage the API keys available for external access.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <DemoGuard>
+                  <div className={styles.apiKeyList}>
+                     {apiKeys.map((key) => (
+                      <div key={key.id} className={styles.apiKeyItem}>
+                        <div className={styles.keyInfo}>
+                          <div className={styles.keyName}>{key.name}</div>
+                          <div className={styles.keyMeta}>
+                            <span className={styles.maskedKey}>
+                              {key.key.substring(0, 8)}****
+                            </span>
+                            <span>Created: {key.created}</span>
+                          </div>
+                        </div>
+                        <div className={styles.deleteBtn}>
+                           <Trash2 size={16} />
+                        </div>
+                      </div>
+                     ))}
+                     {apiKeys.length === 0 && (
+                        <div className="text-sm text-neutral-500 italic py-2">No API keys generated.</div>
+                     )}
+                  </div>
+                  
+                  <div className={styles.newTokenSection}>
+                     <div className={styles.label}>New Token Name</div>
+                     <div className={styles.inputGroup}>
+                        <Input 
+                           placeholder="e.g. my-app-token" 
+                           value={newTokenName}
+                           onChange={(e) => setNewTokenName(e.target.value)}
+                        />
+                        <Button variant="outline">
+                           <Plus size={16} /> Add Token
+                        </Button>
+                     </div>
+                  </div>
+                </DemoGuard>
+              </CardContent>
+            </Card>
+            <Card className="bg-transparent border-neutral-800">
+              <CardHeader>
+                <CardTitle className={styles.cardTitle}>Image Folder</CardTitle>
+                <CardDescription className={styles.cardDescription}>
                   This is the primary folder where your media is stored.
                 </CardDescription>
               </CardHeader>
@@ -180,9 +246,11 @@ const SettingsPage = () => {
                         <div className={styles.pathDisplay}>
                           {currentSettings.imagePath || "No folder selected."}
                         </div>
-                        <Button onClick={() => setIsChanging(true)}>
-                          Change Folder
-                        </Button>
+                        <div className="flex gap-2">
+                           <Button onClick={() => setIsChanging(true)} variant="secondary">
+                             Change Folder
+                           </Button>
+                        </div>
                         <FolderHistory onSelectPath={handleHistorySelect} />
                       </>
                     )}
@@ -191,10 +259,10 @@ const SettingsPage = () => {
             </Card>
           </div>
           <div className={styles.gridColumn}>
-            <Card>
+            <Card className="bg-transparent border-neutral-800">
               <CardHeader>
-                <CardTitle>Models</CardTitle>
-                <CardDescription>
+                <CardTitle className={styles.cardTitle}>Models</CardTitle>
+                <CardDescription className={styles.cardDescription}>
                   Manage the global list of models available for assignment.
                 </CardDescription>
               </CardHeader>
@@ -206,10 +274,10 @@ const SettingsPage = () => {
                 />
               </CardContent>
             </Card>
-            <Card>
+            <Card className="bg-transparent border-neutral-800">
               <CardHeader>
-                <CardTitle>LoRAs</CardTitle>
-                <CardDescription>
+                <CardTitle className={styles.cardTitle}>LoRAs</CardTitle>
+                <CardDescription className={styles.cardDescription}>
                   Manage the global list of LoRAs available for assignment.
                 </CardDescription>
               </CardHeader>

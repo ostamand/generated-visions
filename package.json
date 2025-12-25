@@ -19,6 +19,7 @@
     "electron:dev": "electron-builder install-app-deps && cross-env NODE_ENV=development electron . --no-sandbox",
     "electron:build": "electron-builder install-app-deps && npm run next:build && electron-builder",
     "electron:logo": "npx electron-icon-builder --input=public/logo.png --output=build",
+    "clear-shares": "node scripts/clear-shares.js",
     "clear": "rm -rf dist node_modules && rm -rf ~/.cache/electron-builder && npm cache clean --force && npm install"
   },
   "dependencies": {
@@ -26,6 +27,7 @@
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@radix-ui/react-slot": "^1.2.4",
+    "@radix-ui/react-switch": "^1.2.6",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@types/archiver": "^7.0.0",
     "archiver": "^7.0.1",

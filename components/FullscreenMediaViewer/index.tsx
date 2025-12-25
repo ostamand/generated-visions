@@ -22,14 +22,10 @@ import { formatTimestamp } from "@/lib/time";
 import { DemoGuard } from "@/app/components/DemoGuard";
 import { useDemo } from "@/app/contexts/DemoContext";
 import { toast } from "sonner";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { InputWithCopy } from "../ui/input-with-copy";
 
 interface Model {
   id: number;
@@ -77,11 +73,39 @@ const FullscreenMediaViewer: React.FC<FullscreenMediaViewerProps> = ({
   const [models, setModels] = useState<{ value: number; label: string }[]>([]);
   const [loras, setLoras] = useState<{ value: number; label: string }[]>([]);
   const { isDemoMode } = useDemo();
+  const [isSharing, setIsSharing] = useState(false);
+  const [limitExceeded, setLimitExceeded] = useState(false);
+  const [fileTooLarge, setFileTooLarge] = useState(false);
 
+  // make sure media is still shared
+  useEffect(() => {
+    setLimitExceeded(false);
+    setFileTooLarge(false);
+    if (!media.metadata.share_id) return;
+    fetch(
+      `/api/web/medias?filename=${media.metadata.share_id}`,
+    ).then(async (response) => {
+      // not shared anymore, let's remove
+      if (!response.ok) {
+        await handleSaveMetadata({
+          is_shared: false,
+          share_id: null,
+        });
+        setDisplayMetadata({
+          ...displayMetadata,
+          is_shared: false,
+          share_id: null,
+        });
+      }
+    });
+  }, [media]);
+
+  // set display metadata for edits
   useEffect(() => {
     setDisplayMetadata(media.metadata);
   }, [media.metadata]);
 
+  // fetch models and loras on init
   useEffect(() => {
     const fetchModelsAndLoras = async () => {
       try {
@@ -121,23 +145,22 @@ const FullscreenMediaViewer: React.FC<FullscreenMediaViewerProps> = ({
         onClose();
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [media, mediaList, onSelectItem, onClose]);
 
-  const optimizedSrc = `/api/image?path=${
-    encodeURIComponent(
-      media.relativePath,
-    )
-  }&w=2048&h=2048`;
-  const originalSrc = `/api/image?path=${
-    encodeURIComponent(
-      media.relativePath,
-    )
-  }`;
+  const optimizedSrc = `/api/image?path=${encodeURIComponent(
+    media.relativePath,
+  )
+    }&w=2048&h=2048`;
+
+  const originalSrc = `/api/image?path=${encodeURIComponent(
+    media.relativePath,
+  )
+    }`;
+
   const isVideo = media.relativePath.endsWith(".mp4");
 
   const handleSaveMetadata = async (updates: Partial<ImageMetadata>) => {
@@ -167,6 +190,72 @@ const FullscreenMediaViewer: React.FC<FullscreenMediaViewerProps> = ({
     } catch (error) {
       console.error("Error saving metadata:", error);
       setDisplayMetadata(originalMetadata); // Revert on error
+    }
+  };
+
+  const handleShareToggle = async (is_shared: boolean) => {
+    if (is_shared && !displayMetadata.share_id) {
+      setIsSharing(true);
+      setLimitExceeded(false);
+      setFileTooLarge(false);
+      try {
+        const { prompt, title, width, height, modelId, loras: lorasId } =
+          displayMetadata;
+
+        const selectedModel = models.find((model) => model.value === modelId);
+        const mediaModel = selectedModel ? selectedModel.label : "";
+
+        const selectedLoras = loras.filter((lora) =>
+          lorasId?.includes(lora.value)
+        );
+
+        const mediaLoras = selectedLoras
+          ? selectedLoras.map((lora) => lora.label)
+          : "";
+
+        const payload = {
+          prompt,
+          title,
+          width,
+          height,
+          model: mediaModel,
+          loras: mediaLoras,
+          createdAt: media.modified_at,
+        };
+
+        const response = await fetch(
+          `/api/web/medias?path=${media.relativePath}`,
+          {
+            method: "POST",
+            body: JSON.stringify(payload),
+          },
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          if (data.code === "ABOVE_MONTLY_LIMIT") {
+            setLimitExceeded(true);
+          } else if (data.code === "FILE_TOO_LARGE") {
+            setFileTooLarge(true);
+          }
+          toast.error(
+            data.message,
+          );
+          return;
+        }
+
+        await handleSaveMetadata({
+          is_shared: true,
+          share_id: data.uniqueName,
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsSharing(false); // STOP loading
+      }
+    } else {
+      await handleSaveMetadata({ is_shared });
     }
   };
 
@@ -229,6 +318,68 @@ const FullscreenMediaViewer: React.FC<FullscreenMediaViewerProps> = ({
             <h3>Details</h3>
           </div>
           <div className={styles.panelContent}>
+            <Card>
+              <CardHeader>
+                <CardTitle>Sharing</CardTitle>
+              </CardHeader>
+              <CardContent className={styles.sharingCardContent}>
+                {isSharing
+                  ? (
+                    <div className={styles.sharingLoaderContent}>
+                      <div className={styles.cardLoader}></div>
+                      <p>Uploading...</p>
+                    </div>
+                  )
+                  : (
+                    <>
+                      <div className={styles.shareControl}>
+                        <div className="flex items-center space-x-2">
+                          <Switch
+                            id="share-toggle"
+                            checked={!!displayMetadata.is_shared}
+                            onCheckedChange={handleShareToggle}
+                            disabled={isDemoMode}
+                          />
+                          <label htmlFor="share-toggle">Share this media</label>
+                        </div>
+                      </div>
+                      {limitExceeded && (
+                        <div className={styles.limitExceeded}>
+                          <p>Monthly upload limit exceeded.</p>
+                          <a
+                            href={`${process.env.NEXT_PUBLIC_GENERATED_VISIONS_WEB}/app/settings/usage`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            View usage details
+                          </a>
+                        </div>
+                      )}
+                      {fileTooLarge && (
+                        <div className={styles.limitExceeded}>
+                          <p>File is too large to be shared.</p>
+                        </div>
+                      )}
+                      {displayMetadata.is_shared && displayMetadata.share_id &&
+                        (
+                          <div className="mt-4 w-full">
+                            <InputWithCopy
+                              valueToCopy={`${process.env.NEXT_PUBLIC_GENERATED_VISIONS_WEB}/medias/${displayMetadata.share_id}`}
+                              value={`${process.env.NEXT_PUBLIC_GENERATED_VISIONS_WEB}/medias/${displayMetadata.share_id}`}
+                              tooltip={`${process.env.NEXT_PUBLIC_GENERATED_VISIONS_WEB}/medias/${displayMetadata.share_id}`}
+                              onClick={() =>
+                                window.open(
+                                  `${process.env.NEXT_PUBLIC_GENERATED_VISIONS_WEB}/medias/${displayMetadata.share_id}`,
+                                  "_blank",
+                                )}
+                              inputClassName="cursor-pointer"
+                            />
+                          </div>
+                        )}
+                    </>
+                  )}
+              </CardContent>
+            </Card>
             <Card>
               <CardHeader>
                 <CardTitle>File Information</CardTitle>

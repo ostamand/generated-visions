@@ -47,3 +47,4 @@ global.db
 demo
 deploy-demo.sh
 images
+.env

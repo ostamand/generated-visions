@@ -38,6 +38,8 @@ export function Header() {
     setShowHidden,
     onlyWithPrompt,
     setOnlyWithPrompt,
+    showSharedOnly,
+    setShowSharedOnly,
     refreshData,
     model,
     setModel,
@@ -57,7 +59,7 @@ export function Header() {
 
   // Determine if any dropdown filter is active
   const hasActiveFilters = mediaType !== "all" || showHidden ||
-    onlyWithPrompt || model !== "all";
+    onlyWithPrompt || model !== "all" || showSharedOnly;
 
   const selectedModelName = models.find((m) => m.name === model)?.name || "All";
 
@@ -168,6 +170,12 @@ export function Header() {
                     onCheckedChange={setOnlyWithPrompt}
                   >
                     Show only with prompt
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={showSharedOnly}
+                    onCheckedChange={setShowSharedOnly}
+                  >
+                    Show shared
                   </DropdownMenuCheckboxItem>
 
                   <DropdownMenuSeparator />

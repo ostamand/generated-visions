@@ -37,6 +37,8 @@ interface FilterContextType {
   setShowHidden: (show: boolean) => void;
   onlyWithPrompt: boolean;
   setOnlyWithPrompt: (show: boolean) => void;
+  showSharedOnly: boolean;
+  setShowSharedOnly: (show: boolean) => void;
   galleryRoot: string | null;
   setGalleryRoot: (root: string | null) => void;
   isOverlayOpen: boolean;
@@ -69,6 +71,7 @@ export function FilterProvider({ children }: { children: ReactNode }) {
   const [model, setModel] = useState("all");
   const [showHidden, setShowHidden] = useState(false);
   const [onlyWithPrompt, setOnlyWithPrompt] = useState(false);
+  const [showSharedOnly, setShowSharedOnly] = useState(false);
   const [galleryRoot, setGalleryRoot] = useState<string | null>(null);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -114,7 +117,12 @@ export function FilterProvider({ children }: { children: ReactNode }) {
         const galleryRequest = fetch(galleryUrl.toString(), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ showHidden, selectedFolders, model }),
+          body: JSON.stringify({
+            showHidden,
+            selectedFolders,
+            model,
+            showSharedOnly,
+          }),
           cache: "no-store",
         });
 
@@ -172,6 +180,7 @@ export function FilterProvider({ children }: { children: ReactNode }) {
     mediaType,
     onlyWithPrompt,
     model,
+    showSharedOnly,
   ]);
 
   const updateBatchMetadata = useCallback(
@@ -214,6 +223,7 @@ export function FilterProvider({ children }: { children: ReactNode }) {
     setModel("all");
     setShowHidden(false);
     setOnlyWithPrompt(false);
+    setShowSharedOnly(false);
     setSelectedItems([]);
   };
 
@@ -236,6 +246,8 @@ export function FilterProvider({ children }: { children: ReactNode }) {
         setShowHidden,
         onlyWithPrompt,
         setOnlyWithPrompt,
+        showSharedOnly,
+        setShowSharedOnly,
         galleryRoot,
         setGalleryRoot,
         isOverlayOpen,

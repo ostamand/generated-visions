@@ -13,6 +13,8 @@ export type ImageMetadata = {
   height?: number;
   modelId?: number | null;
   loras?: number[] | null;
+  share_id?: string | null;
+  is_shared?: boolean;
 };
 
 const userDataPath = process.env.USER_DATA_PATH || process.cwd();
@@ -189,6 +191,21 @@ export function getDatabaseInstance(galleryRoot: string): Database.Database {
   // Add model_id column to images table if it doesn't exist
   try {
     db.exec(`ALTER TABLE images ADD COLUMN model_id INTEGER`);
+  } catch (error) {
+    if (
+      !(error instanceof Error &&
+        error.message.includes("duplicate column name"))
+    ) {
+      throw error;
+    }
+  }
+
+  // Add sharing columns to images table if they don't exist
+  try {
+    db.exec(`ALTER TABLE images ADD COLUMN share_id TEXT`);
+    db.exec(
+      `ALTER TABLE images ADD COLUMN is_shared BOOLEAN NOT NULL DEFAULT FALSE`,
+    );
   } catch (error) {
     if (
       !(error instanceof Error &&

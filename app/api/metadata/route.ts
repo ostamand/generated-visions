@@ -11,8 +11,17 @@ export async function POST(request: Request) {
     );
   }
   try {
-    const { imagePath, hidden, starred, prompt, title, modelId, loras } =
-      await request.json();
+    const {
+      imagePath,
+      hidden,
+      starred,
+      prompt,
+      title,
+      modelId,
+      loras,
+      is_shared,
+      share_id,
+    } = await request.json();
 
     const { imagePath: galleryRoot } = getSettings();
 
@@ -73,6 +82,14 @@ export async function POST(request: Request) {
         setClauses.push("model_id = ?");
         params.push(modelId);
       }
+      if (is_shared !== undefined) {
+        setClauses.push("is_shared = ?");
+        params.push(is_shared ? 1 : 0);
+      }
+      if (share_id !== undefined) {
+        setClauses.push("share_id = ?");
+        params.push(share_id);
+      }
 
       if (setClauses.length > 0) {
         params.push(imagePath);
@@ -110,6 +127,16 @@ export async function POST(request: Request) {
       if (modelId !== undefined) {
         columns.push("model_id");
         values.push(modelId);
+        placeholders.push("?");
+      }
+      if (is_shared !== undefined) {
+        columns.push("is_shared");
+        values.push(is_shared ? 1 : 0);
+        placeholders.push("?");
+      }
+      if (share_id !== undefined) {
+        columns.push("share_id");
+        values.push(share_id);
         placeholders.push("?");
       }
 

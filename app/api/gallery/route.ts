@@ -15,7 +15,8 @@ interface LoraRow {
 }
 
 export async function POST(request: Request) {
-  const { showHidden, selectedFolders, model } = await request.json();
+  const { showHidden, selectedFolders, model, showSharedOnly } =
+    await request.json();
   const { imagePath: galleryRoot } = getSettings();
 
   if (!galleryRoot) {
@@ -34,6 +35,10 @@ export async function POST(request: Request) {
 
     if (!showHidden) {
       conditions.push("hidden = 0");
+    }
+
+    if (showSharedOnly) {
+      conditions.push("is_shared = 1");
     }
 
     if (model && model !== "all") {
@@ -67,6 +72,8 @@ export async function POST(request: Request) {
       width?: number;
       height?: number;
       model_id?: number;
+      is_shared?: number;
+      share_id?: string;
     })[];
 
     const lorasStmt = db.prepare(
@@ -87,10 +94,14 @@ export async function POST(request: Request) {
           starred: !!row.starred,
           modelId: row.model_id,
           loras: loras,
+          is_shared: !!row.is_shared,
+          share_id: row.share_id,
         },
         width: row.width,
         height: row.height,
         modified_at: row.modified_at,
+        is_shared: !!row.is_shared,
+        share_id: row.share_id || null,
       };
     });
 
