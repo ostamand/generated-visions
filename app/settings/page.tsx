@@ -24,7 +24,6 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
 import { ApiKey } from "@/lib/settings";
 
 type Settings = {
@@ -84,12 +83,15 @@ const SettingsPage = () => {
   };
 
   // Mocking the token list for UI based on existing data if necessary
-  const apiKeys = currentSettings.api_keys || (currentSettings.user_access_token ? [{
-    id: "legacy",
-    name: "Legacy Token",
-    key: currentSettings.user_access_token,
-    created: "Unknown"
-  }] : []);
+  const apiKeys = currentSettings.api_keys ||
+    (currentSettings.user_access_token
+      ? [{
+        id: "legacy",
+        name: "Legacy Token",
+        key: currentSettings.user_access_token,
+        created: "Unknown",
+      }]
+      : []);
 
   const renderChangeFolderUI = () => {
     if (isLoading) {
@@ -191,7 +193,7 @@ const SettingsPage = () => {
               <CardContent>
                 <DemoGuard>
                   <div className={styles.apiKeyList}>
-                     {apiKeys.map((key) => (
+                    {apiKeys.map((key) => (
                       <div key={key.id} className={styles.apiKeyItem}>
                         <div className={styles.keyInfo}>
                           <div className={styles.keyName}>{key.name}</div>
@@ -203,27 +205,29 @@ const SettingsPage = () => {
                           </div>
                         </div>
                         <div className={styles.deleteBtn}>
-                           <Trash2 size={16} />
+                          <Trash2 size={16} />
                         </div>
                       </div>
-                     ))}
-                     {apiKeys.length === 0 && (
-                        <div className="text-sm text-neutral-500 italic py-2">No API keys generated.</div>
-                     )}
+                    ))}
+                    {apiKeys.length === 0 && (
+                      <div className="text-sm text-neutral-500 italic py-2">
+                        No API keys generated.
+                      </div>
+                    )}
                   </div>
-                  
+
                   <div className={styles.newTokenSection}>
-                     <div className={styles.label}>New Token Name</div>
-                     <div className={styles.inputGroup}>
-                        <Input 
-                           placeholder="e.g. my-app-token" 
-                           value={newTokenName}
-                           onChange={(e) => setNewTokenName(e.target.value)}
-                        />
-                        <Button variant="outline">
-                           <Plus size={16} /> Add Token
-                        </Button>
-                     </div>
+                    <div className={styles.label}>New Token Name</div>
+                    <div className={styles.inputGroup}>
+                      <Input
+                        placeholder="e.g. my-app-token"
+                        value={newTokenName}
+                        onChange={(e) => setNewTokenName(e.target.value)}
+                      />
+                      <Button variant="outline">
+                        <Plus size={16} /> Add Token
+                      </Button>
+                    </div>
                   </div>
                 </DemoGuard>
               </CardContent>
@@ -247,9 +251,12 @@ const SettingsPage = () => {
                           {currentSettings.imagePath || "No folder selected."}
                         </div>
                         <div className="flex gap-2">
-                           <Button onClick={() => setIsChanging(true)} variant="secondary">
-                             Change Folder
-                           </Button>
+                          <Button
+                            onClick={() => setIsChanging(true)}
+                            variant="secondary"
+                          >
+                            Change Folder
+                          </Button>
                         </div>
                         <FolderHistory onSelectPath={handleHistorySelect} />
                       </>

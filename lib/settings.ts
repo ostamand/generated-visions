@@ -9,12 +9,20 @@ interface SeedData {
   loras: string[];
 }
 
+export interface ApiKey {
+  id: string;
+  name: string;
+  key: string;
+  created: string;
+}
+
 interface Settings {
   imagePath?: string;
   isSeeded?: boolean;
   seed?: SeedData;
   demo?: boolean;
   user_access_token?: string;
+  api_keys?: ApiKey[];
 }
 
 const settingsFilePath = path.join(
