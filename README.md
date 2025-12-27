@@ -46,13 +46,38 @@ For the best experience, download the latest release for your operating system.
     generated-visions
     ```
 
-### macOS (Coming Soon)
+### macOS
 
-Instructions for macOS will be provided here shortly.
+1.  **Download the .dmg image:**
+    Go to the **[Releases](https://github.com/ostamand/generated-visions/releases)** page and download the latest `.dmg` file.
+2.  **Install the application:**
+    Open the `.dmg` file and drag the **Generated Visions** icon to your **Applications** folder.
+3.  **Open the application (Important):**
+    Since this app is currently unsigned, macOS will prevent it from opening by default to protect your system.
+    *   **Right-click (or Control-click)** the Generated Visions app in your Applications folder.
+    *   Select **Open** from the context menu.
+    *   A dialog will appear saying it is from an unidentified developer. Click **Open** again to launch it.
+    *   *Note: You only need to do this the first time you run the app.*
 
-### Windows (Coming Soon)
+    **If you see "App is damaged and can't be opened":**
+    This is a common macOS security message for unsigned apps downloaded from the internet. To fix this:
+    1.  Open **Terminal**.
+    2.  Run the following command:
+        ```bash
+        sudo xattr -cr /Applications/Generated\ Visions.app
+        ```
+    3.  Launch the app again.
 
-Instructions for Windows will be provided here shortly.
+### Windows
+
+1.  **Download the installer:**
+    Go to the **[Releases](https://github.com/ostamand/generated-visions/releases)** page and download the latest `.exe` file.
+2.  **Run the installer:**
+    Double-click the `.exe` file to start installation.
+3.  **Bypass SmartScreen (Important):**
+    You may see a blue window saying "Windows protected your PC" because the app is unsigned.
+    *   Click **More info**.
+    *   Click the **Run anyway** button that appears at the bottom.
 
 ## For Developers
 

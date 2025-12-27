@@ -152,12 +152,12 @@ const CommentSection: React.FC<CommentSectionProps> = ({ mediaPath }) => {
 
   return (
     <div className={styles.commentSection}>
-      <h4 className={styles.title}>Comments</h4>
       <div className={styles.commentsContainer}>
         {!showNewCommentBox && (
           <Button
             onClick={() => setShowNewCommentBox(true)}
-            className={styles.addCommentButton}
+            variant="outline"
+            className="w-full text-xs uppercase letter-spacing-0.05em"
           >
             Add Comment
           </Button>
@@ -173,12 +173,14 @@ const CommentSection: React.FC<CommentSectionProps> = ({ mediaPath }) => {
             />
             <div className={styles.newCommentActions}>
               <Button
-                variant="secondary"
+                variant="ghost"
+                size="sm"
                 onClick={() => setShowNewCommentBox(false)}
               >
                 Cancel
               </Button>
               <Button
+                size="sm"
                 onClick={handleCreateComment}
               >
                 Save
@@ -187,7 +189,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ mediaPath }) => {
           </div>
         )}
         <div className={styles.commentList}>
-          {isLoading ? <p>Loading comments...</p> : comments.length > 0
+          {isLoading ? <p className={styles.statusText}>Loading comments...</p> : comments.length > 0
             ? (
               comments.map((comment) => (
                 <CommentItem

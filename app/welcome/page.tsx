@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import { Folder, Loader2, X } from "lucide-react";
 import { useFolderSelection } from "../hooks/useFolderSelection";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const WelcomePage = () => {
   const [env, setEnv] = useState<"unknown" | "electron" | "web">("unknown");
@@ -50,9 +52,9 @@ const WelcomePage = () => {
       return (
         <div className={styles.errorDisplay}>
           <p>Error: {error}</p>
-          <button onClick={cancelSelection} className={styles.button}>
+          <Button onClick={cancelSelection} variant="destructive">
             Try Again
-          </button>
+          </Button>
         </div>
       );
     }
@@ -75,16 +77,16 @@ const WelcomePage = () => {
             </li>
           </ul>
           <div className={styles.buttonGroup}>
-            <button onClick={confirmSelection} className={styles.button}>
+            <Button onClick={confirmSelection}>
               Confirm & Import
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={cancelSelection}
-              className={`${styles.button} ${styles.secondaryButton}`}
+              variant="secondary"
             >
-              <X className={styles.icon} />
+              <X className="w-4 h-4 mr-2" />
               Cancel
-            </button>
+            </Button>
           </div>
         </div>
       );
@@ -92,27 +94,26 @@ const WelcomePage = () => {
 
     if (env === "electron") {
       return (
-        <button onClick={handleSelectFolder} className={styles.button}>
-          <Folder className={styles.icon} />
+        <Button onClick={handleSelectFolder} className="gap-2">
+          <Folder className="w-4 h-4" />
           Select Folder to Get Started
-        </button>
+        </Button>
       );
     }
 
     if (env === "web") {
       return (
         <form onSubmit={handlePathSubmit} className={styles.pathInputWrapper}>
-          <input
+          <Input
             type="text"
             value={pathInput}
             onChange={(e) =>
               setPathInput(e.target.value)}
             placeholder="Paste the absolute path to your media folder"
-            className={styles.pathInput}
           />
-          <button type="submit" className={styles.button}>
+          <Button type="submit">
             Use Path
-          </button>
+          </Button>
         </form>
       );
     }

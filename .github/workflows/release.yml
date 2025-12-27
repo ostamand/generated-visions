@@ -40,9 +40,13 @@ jobs:
 
       # This runs your script: installs native deps -> builds Next.js -> builds Electron
       - name: Run Electron Build
-        run: npm run electron:build
+        run: |
+          npm run electron:logo
+          npm run electron:build
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEXT_PUBLIC_GENERATED_VISIONS_API_URL: ${{ secrets.NEXT_PUBLIC_GENERATED_VISIONS_API_URL }}
+          NEXT_PUBLIC_GENERATED_VISIONS_WEB: ${{ secrets.NEXT_PUBLIC_GENERATED_VISIONS_WEB }}
 
       # Uploads the compiled files from dist/ to the GitHub Release page
       - name: Upload Release Assets

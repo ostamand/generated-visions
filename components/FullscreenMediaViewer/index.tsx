@@ -318,9 +318,9 @@ const FullscreenMediaViewer: React.FC<FullscreenMediaViewerProps> = ({
             <h3>Details</h3>
           </div>
           <div className={styles.panelContent}>
-            <Card>
+            <Card className="bg-transparent border-neutral-800">
               <CardHeader>
-                <CardTitle>Sharing</CardTitle>
+                <CardTitle className={styles.cardTitle}>Sharing</CardTitle>
               </CardHeader>
               <CardContent className={styles.sharingCardContent}>
                 {isSharing
@@ -380,9 +380,9 @@ const FullscreenMediaViewer: React.FC<FullscreenMediaViewerProps> = ({
                   )}
               </CardContent>
             </Card>
-            <Card>
+            <Card className="bg-transparent border-neutral-800">
               <CardHeader>
-                <CardTitle>File Information</CardTitle>
+                <CardTitle className={styles.cardTitle}>File Information</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className={styles.metadataField}>
@@ -407,9 +407,9 @@ const FullscreenMediaViewer: React.FC<FullscreenMediaViewerProps> = ({
                 )}
               </CardContent>
             </Card>
-            <Card>
+            <Card className="bg-transparent border-neutral-800">
               <CardHeader>
-                <CardTitle>Generation Info</CardTitle>
+                <CardTitle className={styles.cardTitle}>Generation Info</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className={styles.metadataField}>
@@ -459,9 +459,16 @@ const FullscreenMediaViewer: React.FC<FullscreenMediaViewerProps> = ({
                 </DemoGuard>
               </CardContent>
             </Card>
-            <DemoGuard>
-              <CommentSection mediaPath={media.relativePath} />
-            </DemoGuard>
+            <Card className="bg-transparent border-neutral-800">
+              <CardHeader>
+                <CardTitle className={styles.cardTitle}>Comments</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <DemoGuard>
+                  <CommentSection mediaPath={media.relativePath} />
+                </DemoGuard>
+              </CardContent>
+            </Card>
           </div>
         </div>
         <div className={styles.mediaWrapper}>

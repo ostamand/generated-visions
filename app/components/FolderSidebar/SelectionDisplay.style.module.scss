@@ -1,84 +1,90 @@
-
 .container {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   padding: 1rem;
-  background-color: rgba(255, 255, 255, 0.03);
-  border-radius: 8px;
+  background-color: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  border-radius: 0.3rem;
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
 }
 
 .allImagesLabel {
-  font-size: 0.9rem;
-  color: #a0a0a0;
+  font-size: 0.8rem;
+  color: #888;
   font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .title {
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 500;
   color: #a0a0a0;
   text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .clearButton {
   background: none;
   border: none;
-  color: #a0a0a0;
-  font-size: 0.8rem;
+  color: #888;
+  font-size: 0.7rem;
   cursor: pointer;
   padding: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
 
   &:hover {
     color: #fff;
-    text-decoration: underline;
   }
 }
 
 .pillsContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .pill {
   display: flex;
   align-items: center;
-  background-color: #5a4fcf;
+  background-color: #1f1f1f;
+  border: 1px solid #2a2a2a;
   color: #fff;
-  border-radius: 1rem;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.85rem;
-  font-weight: 500;
+  border-radius: 0.2rem;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 400;
 }
 
 .pillLabel {
-  margin-right: 0.5rem;
+  margin-right: 0.4rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 150px;
+  max-width: 120px;
 }
 
 .removeButton {
-  background: rgba(0, 0, 0, 0.2);
+  background: none;
   border: none;
-  border-radius: 50%;
-  color: #e0e0e0;
+  color: #888;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2px;
-  transition: background-color 0.2s ease;
+  padding: 1px;
+  transition: all 0.2s;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.4);
     color: #fff;
   }
 }

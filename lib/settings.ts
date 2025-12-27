@@ -23,6 +23,7 @@ interface Settings {
   demo?: boolean;
   user_access_token?: string;
   api_keys?: ApiKey[];
+  lastSeenNewsCreatedAt?: string;
 }
 
 const settingsFilePath = path.join(

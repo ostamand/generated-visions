@@ -11,8 +11,8 @@
   display: flex;
   height: 100vh;
   width: 100%;
-  background-color: #f8f9fa;
-  color: #212529;
+  background-color: #080808;
+  color: #fff;
 }
 
 .leftColumn {
@@ -22,6 +22,7 @@
   flex-direction: column;
   justify-content: center;
   gap: 1.5rem;
+  border-right: 1px solid #1a1a1a;
 }
 
 .rightColumn {
@@ -29,75 +30,43 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #e9ecef;
+  background-color: #0c0c0c;
+  position: relative;
+  overflow: hidden;
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 300;
-  letter-spacing: 3px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin: 0;
 }
 
 .description {
-  font-size: 1.1rem;
-  color: #495057;
+  font-size: 1rem;
+  color: #888;
   max-width: 500px;
+  line-height: 1.6;
 }
 
 .interactiveZone {
-  padding-top: 1rem;
-  min-height: 150px; /* Give it some space to avoid layout shifts */
+  padding-top: 2rem;
+  min-height: 150px;
   display: flex;
   flex-direction: column;
 }
 
-.button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  border: none;
-  border-radius: 0.3rem;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-}
-
-.secondaryButton {
-  background-color: #6c757d;
-  &:hover {
-    background-color: #5a6268;
-  }
-}
-
-.icon {
-  width: 1.2rem;
-  height: 1.2rem;
-}
-
+/* Specific component overrides/layouts */
 .pathInputWrapper {
   display: flex;
   gap: 0.5rem;
-}
-
-.pathInput {
-  flex-grow: 1;
-  padding: 0.75rem;
-  font-size: 1rem;
-  border: 1px solid #ced4da;
-  border-radius: 0.3rem;
+  width: 100%;
 }
 
 .loader {
-  font-size: 1.2rem;
-  color: #6c757d;
+  font-size: 1rem;
+  color: #888;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -110,43 +79,58 @@
 .imagePlaceholder {
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #dbe4ff;
-  color: #6c757d;
+  background-color: #0c0c0c;
   background-image: url('/welcome.jpg');
   background-size: cover; 
   background-position: center; 
+  opacity: 0.5;
+  transition: opacity 0.5s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .errorDisplay {
   p {
-    color: #dc3545;
+    color: #ef4444; /* red-500 */
     margin-bottom: 1rem;
   }
 }
 
 .analysisResult {
+  width: 100%;
+  background-color: #0c0c0c;
+  border: 1px solid #1a1a1a;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+
   h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    color: #eee;
+    margin: 0 0 1rem 0;
   }
 
   .pathPreview {
     font-family: monospace;
-    background-color: #e9ecef;
-    padding: 0.5rem;
+    background-color: #111;
+    color: #888;
+    padding: 0.75rem;
     border-radius: 0.25rem;
     word-break: break-all;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    border: 1px solid #1a1a1a;
   }
 
   ul {
     list-style: none;
     padding: 0;
     margin: 0 0 1.5rem 0;
-    border: 1px solid #dee2e6;
+    border: 1px solid #1a1a1a;
     border-radius: 0.25rem;
     overflow: hidden;
 
@@ -154,7 +138,9 @@
       display: flex;
       justify-content: space-between;
       padding: 0.75rem 1rem;
-      border-bottom: 1px solid #dee2e6;
+      border-bottom: 1px solid #1a1a1a;
+      font-size: 0.9rem;
+      color: #ccc;
 
       &:last-child {
         border-bottom: none;
@@ -162,12 +148,16 @@
 
       span:first-child {
         font-weight: 500;
+        color: #888;
+        font-size: 0.8rem;
+        text-transform: uppercase;
       }
     }
 
     .total {
-      background-color: #e9ecef;
+      background-color: #111;
       font-weight: bold;
+      color: #fff;
     }
   }
 }

@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import {
   Folder,
   Loader2,
-  Plus,
   Settings as SettingsIcon,
   Trash2,
   X,
@@ -25,6 +24,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ApiKey } from "@/lib/settings";
+import { InputWithCopy } from "@/components/ui/input-with-copy";
+import { toast } from "sonner";
 
 type Settings = {
   imagePath?: string;
@@ -37,8 +38,8 @@ const SettingsPage = () => {
   const [pathInput, setPathInput] = useState("");
   const [currentSettings, setCurrentSettings] = useState<Settings>({});
   const [isChanging, setIsChanging] = useState(false);
-  const [newTokenName, setNewTokenName] = useState("");
-  const {} = useDemo();
+  const [newTokenKey, setNewTokenKey] = useState("");
+  const { isDemoMode } = useDemo();
 
   const {
     analysis,
@@ -50,6 +51,7 @@ const SettingsPage = () => {
   } = useFolderSelection();
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setEnv(window.electron?.isElectron ? "electron" : "web");
     fetch("/api/settings")
       .then((res) => res.json())
@@ -82,16 +84,66 @@ const SettingsPage = () => {
     setIsChanging(true);
   };
 
-  // Mocking the token list for UI based on existing data if necessary
-  const apiKeys = currentSettings.api_keys ||
-    (currentSettings.user_access_token
-      ? [{
-        id: "legacy",
-        name: "Legacy Token",
-        key: currentSettings.user_access_token,
-        created: "Unknown",
-      }]
-      : []);
+  const handleSaveToken = async () => {
+    if (isDemoMode) {
+      toast.info("This feature is disabled in demo mode.");
+      return;
+    }
+
+    if (!newTokenKey.trim()) {
+      toast.error("Please enter an API Key.");
+      return;
+    }
+
+    try {
+      // Clear api_keys and set user_access_token
+      const response = await fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_access_token: newTokenKey,
+          api_keys: []
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to save API Key");
+
+      setCurrentSettings({
+        ...currentSettings,
+        user_access_token: newTokenKey,
+        api_keys: []
+      });
+      setNewTokenKey("");
+      toast.success("API Key saved successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to save API key.");
+    }
+  };
+
+  const handleClearToken = async () => {
+    if (isDemoMode) {
+      toast.info("This feature is disabled in demo mode.");
+      return;
+    }
+    if (!confirm("Are you sure you want to remove the API Key?")) return;
+
+    try {
+      const response = await fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_access_token: "", api_keys: [] }),
+      });
+
+      if (!response.ok) throw new Error("Failed to clear settings");
+
+      setCurrentSettings({ ...currentSettings, user_access_token: "", api_keys: [] });
+      toast.success("API Key cleared successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to clear API key.");
+    }
+  };
 
   const renderChangeFolderUI = () => {
     if (isLoading) {
@@ -185,48 +237,49 @@ const SettingsPage = () => {
           <div className={styles.gridColumn}>
             <Card className="bg-transparent border-neutral-800">
               <CardHeader>
-                <CardTitle className={styles.cardTitle}>API KEYS</CardTitle>
+                <CardTitle className={styles.cardTitle}>API Key</CardTitle>
                 <CardDescription className={styles.cardDescription}>
-                  Manage the API keys available for external access.
+                  Manage the API key available for external access.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <DemoGuard>
-                  <div className={styles.apiKeyList}>
-                    {apiKeys.map((key) => (
-                      <div key={key.id} className={styles.apiKeyItem}>
-                        <div className={styles.keyInfo}>
-                          <div className={styles.keyName}>{key.name}</div>
-                          <div className={styles.keyMeta}>
-                            <span className={styles.maskedKey}>
-                              {key.key.substring(0, 8)}****
-                            </span>
-                            <span>Created: {key.created}</span>
-                          </div>
-                        </div>
-                        <div className={styles.deleteBtn}>
-                          <Trash2 size={16} />
+                  <div className="space-y-4">
+                    {currentSettings.user_access_token ? (
+                      <div className="space-y-2">
+                        <div className={styles.label}>Current API Key</div>
+                        <div className="flex items-center gap-2">
+                          <InputWithCopy
+                            valueToCopy={currentSettings.user_access_token}
+                            value={currentSettings.user_access_token} // Show full key as requested for copy/paste convenience
+                            className="font-mono flex-1"
+                            type="password" // Mask it but allow copy
+                          />
+                          <Button variant="ghost" size="icon" onClick={handleClearToken} className="text-red-500 hover:text-red-700 hover:bg-red-100">
+                            <Trash2 size={16} />
+                          </Button>
                         </div>
                       </div>
-                    ))}
-                    {apiKeys.length === 0 && (
+                    ) : (
                       <div className="text-sm text-neutral-500 italic py-2">
-                        No API keys generated.
+                        No API key set.
                       </div>
                     )}
-                  </div>
 
-                  <div className={styles.newTokenSection}>
-                    <div className={styles.label}>New Token Name</div>
-                    <div className={styles.inputGroup}>
-                      <Input
-                        placeholder="e.g. my-app-token"
-                        value={newTokenName}
-                        onChange={(e) => setNewTokenName(e.target.value)}
-                      />
-                      <Button variant="outline">
-                        <Plus size={16} /> Add Token
-                      </Button>
+                    <div className="space-y-2 pt-4 border-t border-neutral-800">
+                      <div className={styles.label}>{currentSettings.user_access_token ? "Update API Key" : "Set API Key"}</div>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          placeholder="Paste your API Key here..."
+                          value={newTokenKey}
+                          onChange={(e) => setNewTokenKey(e.target.value)}
+                          type="password"
+                          className="flex-1"
+                        />
+                        <Button onClick={handleSaveToken} disabled={isDemoMode}>
+                          Save
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </DemoGuard>
